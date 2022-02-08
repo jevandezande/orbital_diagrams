@@ -21,6 +21,8 @@ class ComboOrbital(BaseOrbital):
             self.weights = [1 / len(orbs) ** 0.5] * len(orbs)
         else:
             norm = sum(w ** 2 for w in self.weights) ** 0.5
+            if norm <= 0:
+                raise ValueError("Weights cannot all be 0.")
             self.weights = [w / norm for w in weights]
 
     def __iter__(self) -> Iterator[tuple[BaseOrbital, float]]:

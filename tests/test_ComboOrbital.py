@@ -1,4 +1,4 @@
-from pytest import approx, fixture
+from pytest import approx, fixture, raises
 
 from orbital_diagrams import ComboOrbital
 from orbital_diagrams._base_orbital import BaseOrbital
@@ -12,6 +12,9 @@ def orbs_4():
 def test_init(orbs_4):
     co = ComboOrbital(orbs_4, [1] * 4)
     assert co.weights == approx([0.5] * 4)
+
+    with raises(ValueError):
+        ComboOrbital(orbs_4, [0] * 4)
 
 
 def test_iter(orbs_4):
