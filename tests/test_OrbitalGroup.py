@@ -1,4 +1,4 @@
-from pytest import fixture, mark
+from pytest import fixture
 
 from orbital_diagrams import OrbitalGroup
 from orbital_diagrams._base_orbital import BaseOrbital
@@ -11,16 +11,14 @@ def orbs_4():
 
 def test_init(orbs_4):
     og = OrbitalGroup(orbs_4)
-    assert og.orbs == orbs_4
+    assert list(orbs_4) == og.orbs
 
 
-@mark.xfail
 def test_iter(orbs_4):
     og = OrbitalGroup(orbs_4)
     assert list(og) == og.orbs
 
 
-@mark.xfail
 def test_str(orbs_4):
     og = OrbitalGroup(orbs_4)
-    assert str(og) == "<OrbitalGroup {list(og)}>"
+    assert str(og) == f"<OrbitalGroup {list(og)}>"
