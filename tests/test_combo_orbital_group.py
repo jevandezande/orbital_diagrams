@@ -3,6 +3,9 @@ from pytest import approx, fixture, mark, raises
 from orbital_diagrams import ComboOrbitalGroup, OrbitalGroup
 from orbital_diagrams._base_orbital import BaseOrbital
 
+SQRT2 = approx(1 / (2 ** 0.5))
+NSQRT2 = approx(-1 / (2 ** 0.5))
+
 
 @fixture
 def orbs_2():
@@ -17,6 +20,18 @@ def orb_group_1():
 @fixture
 def orb_group_2():
     return OrbitalGroup([BaseOrbital() for _ in range(2)])
+
+
+@fixture
+def combo_orb_group_2(orb_group_2):
+    connections3 = [
+        [[1, 0], [1, 0]],
+        [[1, 0], [-1, 0]],
+    ]
+    return ComboOrbitalGroup(
+        [orb_group_2, orb_group_2],
+        connections3,
+    )
 
 
 @fixture
@@ -57,7 +72,7 @@ def test_init(orb_group_1, orb_group_2):
             [[1, 0], [1, 0]],
             [[1, 0], [-1, 0]],
             [[0, 1], [0, 1]],
-            [[0, 0], [0, 0]],
+            [[0, 0], [0, 0]],  # Having all 0 coefficients for an orbital is not allowed
         ]
         ComboOrbitalGroup(
             [orb_group_2, orb_group_2],
@@ -72,25 +87,24 @@ def test_len(combo_orb_group_2, combo_orb_group_3):
 
 
 @mark.xfail
-def test_iter(combo_orb_group_2, combo_orb_group_3):
-    sqrt2 = approx(1 / (2 ** 0.5))
-
-    combo_orbs_2 = [combo_orb for combo_orb in combo_orb_group_2]
-    assert combo_orbs_2.reference_orbitals == [orb_group_2, orb_group_2]
-    assert combo_orbs_2[0].weights == [sqrt2, sqrt2]
-    assert combo_orbs_2[1].weights == [sqrt2, -sqrt2]
+def test_iter(orb_group_2, combo_orb_group_2, combo_orb_group_3):
+    # combo_orbs_2 = [combo_orb for combo_orb in combo_orb_group_2]
+    assert combo_orb_group_2.ref_orb_groups == [orb_group_2, orb_group_2]
+    assert combo_orb_group_2[0].weights == [SQRT2, SQRT2]
+    assert combo_orb_group_2[1].weights == [SQRT2, NSQRT2]
 
     combo_orbs_3 = [combo_orb for combo_orb in combo_orb_group_3]
-    assert combo_orbs_3.reference_orbitals == [orb_group_2, orb_group_2]
-    assert combo_orbs_3[0].weights == [sqrt2, sqrt2, 0, 0]
-    assert combo_orbs_3[1].weights == [sqrt2, -sqrt2, 0, 0]
-    assert combo_orbs_3[2].weights == [0, 0, sqrt2, sqrt2]
-    assert combo_orbs_3[3].weights == [0, 0, sqrt2, -sqrt2]
-
-
-@mark.xfail
-def test_str(orbs_4):
-    pass
+    assert combo_orb_group_3.ref_orb_groups == [orb_group_2, orb_group_2]
+    assert combo_orb_group_3.connections == [
+        [[SQRT2, 0], [SQRT2, 0]],
+        [[SQRT2, 0], [NSQRT2, 0]],
+        [[0, SQRT2], [0, SQRT2]],
+        [[0, SQRT2], [0, NSQRT2]],
+    ]
+    assert combo_orb_group_3[0].weights == [SQRT2, SQRT2]
+    assert combo_orb_group_3[1].weights == [SQRT2, NSQRT2]
+    assert combo_orbs_3[2].weights == [SQRT2, SQRT2]
+    assert combo_orbs_3[3].weights == [SQRT2, NSQRT2]
 
 
 @mark.xfail
