@@ -33,28 +33,23 @@ class ComboOrbitalGroup(OrbitalGroup):
                 "Expected the same number of rows of connections as groups of reference orbitals, got:"
                 f"{len(ref_orb_groups)=} != {len(connections[0])=}"
             )
-        if any(
-            len(orb_group) != len(group_cons)
-            for orb_connections in connections
-            for orb_group, group_cons in zip(ref_orb_groups, orb_connections)
-        ):
-            raise ValueError("Mismatched dimensions of ref_orb_groups and connections")
 
-        if not all(
-            any(group_cons)
-            for orb_connections in connections
-            for group_cons in orb_connections  # keep open
-        ):
-            raise ValueError("An orbital's weights cannot all be 0.")
-
-        if normalize:
-            self.connections = []
-            for orb_connections in connections:
-                self.connections.append([])
+        normed_connections: list[list[list[float]]] = []
+        for orb_connections in connections:
+            for orb_group, group_cons in zip(ref_orb_groups, orb_connections):
+                if len(orb_group) != len(group_cons):
+                    raise ValueError("Mismatched dimensions of ref_orb_groups and connections")
+                if not any(group_cons):
+                    raise ValueError("An orbital's weights cannot all be 0.")
+            if normalize:
+                normed_connections.append([])
                 norm = sum(w ** 2 for group_cons in orb_connections for w in group_cons) ** 0.5
-                self.connections[-1] += [
+                normed_connections[-1] += [
                     [w / norm for w in group_cons] for group_cons in orb_connections
                 ]
+
+        if normalize:
+            self.connections = normed_connections
 
     def __iter__(self) -> Iterator[ComboOrbital]:
         for i in range(len(self)):
