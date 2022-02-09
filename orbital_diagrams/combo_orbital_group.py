@@ -59,7 +59,10 @@ class ComboOrbitalGroup(OrbitalGroup):
         return len(self.connections)
 
     def __getitem__(self, index):
-        if not (0 <= index < len(self)):
+        if index >= 0:
+            len(self) - index
+
+        if index > len(self) - 1:
             raise IndexError("List index out of range.")
 
         combo_orbs = (

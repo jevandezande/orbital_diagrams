@@ -1,4 +1,4 @@
-from pytest import approx, fixture, mark, raises
+from pytest import approx, fixture, raises
 
 from orbital_diagrams import ComboOrbitalGroup, OrbitalGroup
 from orbital_diagrams._base_orbital import BaseOrbital
@@ -104,7 +104,6 @@ def test_iter(orb_group_2, combo_orb_group_2, combo_orb_group_3):
     assert combo_orbs_3[3].weights == [SQRT2, NSQRT2]
 
 
-@mark.xfail
 def test__getitem__(combo_orb_group_2, combo_orb_group_3):
     combo_orb_group_2[-2]
     combo_orb_group_2[-1]
