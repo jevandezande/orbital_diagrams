@@ -1,4 +1,4 @@
-from pytest import fixture, mark, raises
+from pytest import fixture, raises
 
 from orbital_diagrams import OrbitalGroup
 from orbital_diagrams._base_orbital import BaseOrbital
@@ -27,7 +27,6 @@ def test_iter(og_4):
     assert list(og_4) == og_4.orbs
 
 
-@mark.xfail
 def test__getitem__(og_4):
     for i in range(-4, 4):
         assert og_4[i] == BaseOrbital()

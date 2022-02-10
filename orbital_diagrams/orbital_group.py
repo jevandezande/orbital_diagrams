@@ -11,6 +11,9 @@ class OrbitalGroup(BaseOrbital):
     def __len__(self) -> int:
         return len(self.orbs)
 
+    def __getitem__(self, index):
+        return self.orbs[index]
+
     def __iter__(self) -> Iterator[BaseOrbital]:
         yield from self.orbs
 
