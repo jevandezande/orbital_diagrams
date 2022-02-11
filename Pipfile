@@ -7,7 +7,7 @@ verify_ssl = true
 python_version = "3.10"
 
 [packages]
-
+matplotlib = "*"
 
 [dev-packages]
 black = "==21.12b0"
