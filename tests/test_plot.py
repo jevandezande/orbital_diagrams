@@ -6,7 +6,6 @@ from orbital_diagrams.orbitals._base_orbital import BaseOrbital
 from orbital_diagrams.plot import cycle_values, plotter, setup_axis, subplots
 
 
-@mark.xfail
 def test_setup_axis():
     fig, ax = plt.subplots()
 

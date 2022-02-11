@@ -1,5 +1,7 @@
 from itertools import cycle
 
+from matplotlib import ticker
+
 from ._typing import (
     Any,
     Axes,
@@ -145,7 +147,70 @@ def setup_axis(  # noqa: C901
     :param *ticks_minor: *-axis minor ticks
     :param *label: label for the *-axis
     """
-    pass
+    if not isinstance(ax, Axes):
+        for sub_ax in ax:
+            setup_axis(
+                sub_ax,
+                style,
+                title,
+                xlim,
+                xticks,
+                xticks_minor,
+                xlabel,
+                ylim,
+                yticks,
+                yticks_minor,
+                ylabel,
+            )
+
+    else:
+        # Update values that are None
+        up = lambda v, d: d if v is None else v
+
+        if style:
+            if style == "BaseOrbital":
+                pass
+            elif style == "EnergyOrbital":
+                ylabel = up(ylabel, "Energy")
+            elif style == "ComboOrbital":
+                pass
+            elif style == "ComboEnergyOrbital":
+                ylabel = up(ylabel, "Energy")
+            elif style == "OrbitalGroup":
+                pass
+            elif style == "EnergyOrbitalGroup":
+                ylabel = up(ylabel, "Energy")
+            elif style == "ComboOrbitalGroup":
+                pass
+            elif style == "ComboEnergyOrbitalGroup":
+                ylabel = up(ylabel, "Energy")
+            else:
+                raise NotImplementedError(
+                    f"{style=} is not yet implemented, buy a developer a coffee."
+                )
+
+        ax.set_title(title)
+
+        if xticks is not None:
+            ax.set_xticks(xticks)
+        if xticks_minor is True:
+            ax.xaxis.set_minor_locator(ticker.AutoMinorLocator())
+        elif xticks_minor is not None:
+            ax.xaxis.set_minor_locator(ticker.AutoMinorLocator(xticks_minor))
+        if yticks is not None:
+            ax.set_yticks(yticks)
+        if yticks_minor is True:
+            ax.yaxis.set_minor_locator(ticker.AutoMinorLocator())
+        elif yticks_minor is not None:
+            ax.yaxis.set_minor_locator(ticker.AutoMinorLocator(yticks_minor))
+
+        if xlim is not None:
+            ax.set_xlim(*xlim)
+        if ylim is not None:
+            ax.set_ylim(*ylim)
+
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
 
 
 def cycle_values(values: Any) -> Iterable:
