@@ -1,7 +1,7 @@
 from pytest import fixture, raises
 
-from orbital_diagrams import OrbitalGroup
-from orbital_diagrams._base_orbital import BaseOrbital
+from orbital_diagrams.api import OrbitalGroup
+from orbital_diagrams.orbitals._base_orbital import BaseOrbital
 
 
 def gen_orb_group(size):

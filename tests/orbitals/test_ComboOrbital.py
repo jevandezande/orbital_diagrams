@@ -1,7 +1,7 @@
 from pytest import approx, fixture, raises
 
-from orbital_diagrams import ComboOrbital
-from orbital_diagrams._base_orbital import BaseOrbital
+from orbital_diagrams.api import ComboOrbital
+from orbital_diagrams.orbitals._base_orbital import BaseOrbital
 
 
 @fixture

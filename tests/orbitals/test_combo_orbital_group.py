@@ -1,7 +1,7 @@
 from pytest import approx, fixture, raises
 
-from orbital_diagrams import ComboOrbitalGroup, OrbitalGroup
-from orbital_diagrams._base_orbital import BaseOrbital
+from orbital_diagrams.api import ComboOrbitalGroup, OrbitalGroup
+from orbital_diagrams.orbitals._base_orbital import BaseOrbital
 
 SQRT2 = approx(1 / (2 ** 0.5))
 NSQRT2 = approx(-1 / (2 ** 0.5))

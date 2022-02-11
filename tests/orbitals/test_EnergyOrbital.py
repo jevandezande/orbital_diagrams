@@ -1,4 +1,4 @@
-from orbital_diagrams import EnergyOrbital
+from orbital_diagrams.api import EnergyOrbital
 
 
 def test_init():
