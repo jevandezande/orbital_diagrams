@@ -21,7 +21,6 @@ def test_setup_axis():
         setup_axis(ax, "None")
 
 
-@mark.xfail
 def test_subplots():
     assert len(subplots("BaseOrbital")) == 2
     assert len(subplots("EnergyOrbital")[1]) == 1
