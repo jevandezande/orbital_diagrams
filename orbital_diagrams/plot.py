@@ -4,7 +4,6 @@ from matplotlib import pyplot as plt
 from matplotlib import ticker
 
 from ._typing import (
-    Any,
     Axes,
     Iterable,
     Opt_Iter_Float,
@@ -13,6 +12,7 @@ from ._typing import (
     Optional,
     Plot,
     Sequence,
+    TypeVar,
 )
 from .orbitals._base_orbital import BaseOrbital
 
@@ -240,7 +240,10 @@ def setup_axis(  # noqa: C901
         ax.set_ylabel(ylabel)
 
 
-def cycle_values(values: Any) -> Iterable:
+T = TypeVar("T")
+
+
+def cycle_values(values: Iterable[T] | T) -> Iterable[T]:
     """
     Make a cycle iterator of values.
 

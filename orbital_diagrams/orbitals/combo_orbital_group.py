@@ -23,7 +23,7 @@ class ComboOrbitalGroup(OrbitalGroup):
         self,
         ref_orb_groups: list[OrbitalGroup],
         connections: list[list[list[float]]],
-        normalize=True,
+        normalize: bool = True,
     ):
         self.ref_orb_groups = ref_orb_groups
         self.connections = connections
@@ -58,21 +58,23 @@ class ComboOrbitalGroup(OrbitalGroup):
     def __len__(self) -> int:
         return len(self.connections)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> ComboOrbital:
         if index >= 0:
             len(self) - index
 
         if index > len(self) - 1:
             raise IndexError("List index out of range.")
 
-        combo_orbs = (
-            (orbital, weight)
-            for orbs_weights in zip(self.ref_orb_groups, self.connections[index])
-            for orbital, weight in zip(*orbs_weights)
-            if weight
+        orbs, weights = zip(
+            *(
+                (orbital, weight)
+                for orbs_weights in zip(self.ref_orb_groups, self.connections[index])
+                for orbital, weight in zip(*orbs_weights)
+                if weight
+            )
         )
 
-        return ComboOrbital(*zip(*combo_orbs))
+        return ComboOrbital(list(orbs), list(weights))
 
     @property
     def orbs(self):
